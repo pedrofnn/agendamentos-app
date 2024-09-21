@@ -14,14 +14,14 @@ const AgendamentoForm = () => {
   }
   const Select = ({data}) => {
     return (
-      <select className="p-2 border rounded bg-gray-50 border-gray-200" defaultValue={0}>
+      <select className="p-2 border rounded bg-gray-50 border-gray-200 text-sm" defaultValue={0}>
         <option disabled className="hidden" value={0}></option>
         {data.map((nome, index) => <option value={nome} key={index}>{nome}</option>)}
       </select>
     )
   }
   return (
-    <form className="max-w-sm mx-auto">
+    <form className="w-96 mx-auto">
       <Label>Nome
         <Input type={"text"} inputName={"nome"}/>
       </Label>

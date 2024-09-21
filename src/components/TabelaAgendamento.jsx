@@ -1,7 +1,9 @@
 import agendamentos from "../AgendamentosDB"
+import {EditIcon} from "./icons/EditIcon"
+import {DeleteIcon} from "./icons/DeleteIcon"
 const TabelaAgendamento = () => {
-  const Cells = ({ children, headerCell = false}) => {
-    return (<th className={`px-6 ${headerCell === true ?"py-3 font-bold": "py-4 font-light"}`}>{children}</th>)
+  const Cells = ({ children, headerCell = false, customClass}) => {
+    return (<th className={`px-6 ${headerCell === true ?"py-3 font-bold": "py-4 font-light"} ${customClass} text-center`}>{children}</th>)
   }
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg table-div mx-auto">
@@ -13,6 +15,7 @@ const TabelaAgendamento = () => {
             <Cells headerCell={true}>Nome</Cells>
             <Cells headerCell={true}>Unidade</Cells>
             <Cells headerCell={true}>Atendente</Cells>
+            <Cells headerCell={true}>Ações</Cells>
           </tr>
         </thead>
         <tbody>
@@ -23,6 +26,10 @@ const TabelaAgendamento = () => {
             <Cells>{agendamento.nome}</Cells>
             <Cells>{agendamento.unidade}</Cells>
             <Cells>{agendamento.atendente}</Cells>
+            <Cells customClass={"flex gap-3"}>
+              <button><EditIcon fill={"currentColor"} className="text-blue-500 hover:text-blue-600 active:text-blue-700"/></button>
+              <button><DeleteIcon fill={"currentColor"} className="text-red-500 hover:text-red-600 active:text-red-700"/></button>
+            </Cells>
           </tr>
         ))}
         </tbody>     
