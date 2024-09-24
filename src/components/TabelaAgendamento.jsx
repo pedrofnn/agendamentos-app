@@ -20,15 +20,15 @@ const TabelaAgendamento = () => {
         </thead>
         <tbody>
         {agendamentos.map((agendamento, index) => (
-          <tr key={index} className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600">
+          <tr key={index} className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700">
             <Cells>{agendamento.horario}</Cells>
             <Cells>{agendamento.data}</Cells>
             <Cells>{agendamento.nome}</Cells>
             <Cells>{agendamento.unidade}</Cells>
             <Cells>{agendamento.atendente}</Cells>
-            <Cells customClass={"flex gap-3"}>
-              <button><EditIcon fill={"currentColor"} className="text-blue-500 hover:text-blue-600 active:text-blue-700"/></button>
-              <button><DeleteIcon fill={"currentColor"} className="text-red-500 hover:text-red-600 active:text-red-700"/></button>
+            <Cells customClass={"flex gap-3 justify-center"}>
+              <button className="outline-none focus:outline-none"><EditIcon fill={"currentColor"} className="text-blue-500 hover:text-blue-600 active:text-blue-700"/></button>
+              <button className="outline-none focus:outline-none"><DeleteIcon fill={"currentColor"} className="text-red-500 hover:text-red-600 active:text-red-700"/></button>
             </Cells>
           </tr>
         ))}

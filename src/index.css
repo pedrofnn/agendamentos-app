@@ -5,3 +5,17 @@
 .table-div{
   max-width: 900px;
 }
+.popup-animation {
+  animation: popup .5s linear;
+}
+
+@keyframes popup {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  100% {
+    transform:scale(1);
+    opacity: 1;
+  }
+}
