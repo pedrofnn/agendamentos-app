@@ -1,35 +1,43 @@
-import agendamentos from "../AgendamentosDB"
 import {EditIcon} from "./icons/EditIcon"
 import {DeleteIcon} from "./icons/DeleteIcon"
-const TabelaAgendamento = () => {
-  const Cells = ({ children, headerCell = false, customClass}) => {
-    return (<th className={`px-6 ${headerCell === true ?"py-3 font-bold": "py-4 font-light"} ${customClass} text-center`}>{children}</th>)
-  }
+const TabelaAgendamento = ({deleteAgendamento, editAgendamento, agendamentos}) => {
+  
+    const styleClass = {
+      table: "w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400",
+      thead: "text-sm text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400",
+      tr: "odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700",
+      th: "px-6 py-3 font-bold text-center",
+      td: "px-6 py-4 font-light text-center",
+      button: "outline-none focus:outline-none",
+      editIcon: "text-blue-500 hover:text-blue-600 active:text-blue-700",
+      deleteIcon: "text-red-500 hover:text-red-600 active:text-red-700",
+    }
+
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg table-div mx-auto">
-      <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-        <thead className="text-sm text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
+      <table className={styleClass.table}>
+        <thead className={styleClass.thead}>
           <tr>
-            <Cells headerCell={true}>Horário</Cells>
-            <Cells headerCell={true}>Data</Cells>
-            <Cells headerCell={true}>Nome</Cells>
-            <Cells headerCell={true}>Unidade</Cells>
-            <Cells headerCell={true}>Atendente</Cells>
-            <Cells headerCell={true}>Ações</Cells>
+            <th className={styleClass.th}>Horário</th>
+            <th className={styleClass.th}>Data</th>
+            <th className={styleClass.th}>Nome</th>
+            <th className={styleClass.th}>Unidade</th>
+            <th className={styleClass.th}>Atendente</th>
+            <th className={styleClass.th}>Ações</th>
           </tr>
         </thead>
         <tbody>
         {agendamentos.map((agendamento, index) => (
-          <tr key={index} className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700">
-            <Cells>{agendamento.horario}</Cells>
-            <Cells>{agendamento.data}</Cells>
-            <Cells>{agendamento.nome}</Cells>
-            <Cells>{agendamento.unidade}</Cells>
-            <Cells>{agendamento.atendente}</Cells>
-            <Cells customClass={"flex gap-3 justify-center"}>
-              <button className="outline-none focus:outline-none"><EditIcon fill={"currentColor"} className="text-blue-500 hover:text-blue-600 active:text-blue-700"/></button>
-              <button className="outline-none focus:outline-none"><DeleteIcon fill={"currentColor"} className="text-red-500 hover:text-red-600 active:text-red-700"/></button>
-            </Cells>
+          <tr key={index} className={styleClass.tr}>
+            <td className={styleClass.td}>{agendamento.horario}</td>
+            <td className={styleClass.td}>{agendamento.data}</td>
+            <td className={styleClass.td}>{agendamento.nome}</td>
+            <td className={styleClass.td}>{agendamento.unidade}</td>
+            <td className={styleClass.td}>{agendamento.atendente}</td>
+            <td className={`${styleClass.td} flex gap-3 justify-center`}>
+              <button className={styleClass.button} onClick={()=> editAgendamento(agendamento)}><EditIcon fill={"currentColor"} className={styleClass.editIcon}/></button>
+              <button className={styleClass.button} onClick={()=> deleteAgendamento(agendamento)}><DeleteIcon fill={"currentColor"} className={styleClass.deleteIcon}/></button>
+            </td>
           </tr>
         ))}
         </tbody>     

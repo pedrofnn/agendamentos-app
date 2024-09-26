@@ -1,4 +1,4 @@
-const agendamentos = [
+const agendamentosDb = [
   {
       nome: "João Silva",
       horario: "09:00",
@@ -28,4 +28,4 @@ const agendamentos = [
       atendente: "Débora"
   }
 ];
-export default agendamentos
+export default agendamentosDb
