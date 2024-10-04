@@ -29,7 +29,7 @@ const AgendamentoForm = ({updateForm, agendamentoSubmit}) => {
 
   return (
     <form className="w-96 mx-auto" onSubmit={submitForm}>
-      <label className={`${classes.label} w-full`}>Nome
+      <label className={`${classes.label} w-full`}>Nome Paciente
         <input type="text" name="nome" className={classes.input} value={nome} onChange={(e) => setNome(e.target.value)} required/>
       </label>
       <div className="flex justify-between">

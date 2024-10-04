@@ -10,7 +10,7 @@ const unidadeSchema = mongoose.Schema({
         maxLength: 50,
         required: true
     },
-    status:{
+    ativa:{
       type: Boolean,
       default: true,
     }

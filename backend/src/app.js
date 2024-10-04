@@ -1,20 +1,12 @@
 import express from "express";
-import mongoose from 'mongoose'
-import 'dotenv/config';
-import connectDB from "./config/dbConfig.js";
+import {connectDB, connectionListeners} from "./config/dbConfig.js";
+import agendamentoRoute from "./routes/agendamentoRoute.js";
+import atendenteRoute from "./routes/atendenteRoute.js";
+import unidadeRoute from "./routes/unidadeRoute.js";
 
 //Conxão com mongoDB
+connectionListeners();
 connectDB();
-mongoose.connection.on('error', (error) => {
-  console.error('Erro na conexão',error)
-});
-mongoose.connection.once('open', () => {
-  console.log("Conectado ao MongoDB")
-});
-
-
-
-
 
 const app = express();
 
@@ -23,9 +15,9 @@ app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 
 //Rotas
-//app.use('/agendamentos', agendamentosRoute);
-//app.use('/unidades', unidadesRoute);
-//app.use('/atendentes', atendentesRoute);
+app.use('/agendamentos', agendamentoRoute);
+app.use('/unidades', unidadeRoute);
+app.use('/atendentes', atendenteRoute);
 
 
 

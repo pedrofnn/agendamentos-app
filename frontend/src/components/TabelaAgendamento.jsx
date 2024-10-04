@@ -20,7 +20,7 @@ const TabelaAgendamento = ({deleteAgendamento, editAgendamento, agendamentos}) =
           <tr>
             <th className={styleClass.th}>Horário</th>
             <th className={styleClass.th}>Data</th>
-            <th className={styleClass.th}>Nome</th>
+            <th className={styleClass.th}>Nome Paciente</th>
             <th className={styleClass.th}>Unidade</th>
             <th className={styleClass.th}>Atendente</th>
             <th className={styleClass.th}>Ações</th>

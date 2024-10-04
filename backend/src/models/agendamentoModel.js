@@ -13,7 +13,7 @@ const agendamentoSchema = mongoose.Schema({
     type: Date,
     required: true
   },
-  paciente: {
+  pacienteNome: {
     type: String,
     required: true
   },
