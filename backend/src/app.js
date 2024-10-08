@@ -15,9 +15,9 @@ app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 
 //Rotas
-app.use('/agendamentos', agendamentoRoute);
-app.use('/unidades', unidadeRoute);
-app.use('/atendentes', atendenteRoute);
+app.use('/api/agendamento', agendamentoRoute);
+app.use('/api/unidade', unidadeRoute);
+app.use('/api/atendente', atendenteRoute);
 
 
 

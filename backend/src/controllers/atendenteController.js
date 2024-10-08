@@ -1,4 +1,5 @@
 import Atendente from "../models/atendenteModel.js";
+import Agendamento from '../models/agendamentoModel.js'
 import validateBoolean from '../utils/validateBoolean.js';
 
 //Lista com todos atendentes
@@ -100,7 +101,11 @@ const atualizarAtendente = async(req, res) => {
 //Route '/atendente/:id'
 const deleteAtendente = async(req, res) => {
   try {
-    
+    //Procurar Agendamentos com atendente antes de excluir
+    const findAgendamentosComAtendente = await Agendamento.find({atendente: req.params.id})
+    if(findAgendamentosComAtendente.length >= 1){
+      return res.status(400).json({mensagem: "Exclua esses agendamentos antes de excluir esse atendente", agendamento: findAgendamentosComAtendente})
+    }
     const deletedAtendente = await Atendente.findByIdAndDelete(req.params.id)
     if(deletedAtendente){
       return res.status(200).json({mensagem: `Deletado o atendente com id ${req.params.id}`})

@@ -17,27 +17,27 @@ const listaUnidades = async(req, res) => {
 //Método POST
 //Route /unidade
 const criarUnidade = async(req, res) => {
-  const {nome, status} = req.body;
-  //Checkar campo Nome
+  const {nome, ativa} = req.body;
+  //Confirmar campo Nome está vazio
   if(!nome){
     return res.status(400).json({mensagem: "Preencha o campo nome"});
   }
-  //Checkar Status === Boolean
-  const ativaValor = validateBoolean(status);
-  if(status !== undefined &&  typeof ativaValor !== 'boolean'){
+  //Confirmar status é um valor booleano
+  const ativaValor = validateBoolean(ativa);
+  if(ativa !== undefined && typeof ativaValor !== 'boolean'){
     return res.status(400).json({mensagem: "Status deve ser um valor booleano ex:(true,false)"});
   }
 
   const novaUnidade = new Unidade({
     nome,
-    status: status ? ativaValor : true
+    ativa: ativa !== undefined ? ativaValor : true
   });
   try {
     const unidadeCriado = await novaUnidade.save();
     if(unidadeCriado){
       return res.status(201).json(unidadeCriado);
     } else{
-      return res.status(400).json({mensagem: "Não foi possível criar novo unidade"});
+      return res.status(400).json({mensagem: "Não foi possível criar nova unidade"});
     }
   }catch (error) {
     return res.status(500).json({mensagem: error.message});
@@ -66,12 +66,12 @@ const unidadePorId = async(req, res) => {
 const atualizarUnidade = async(req, res) => {
   const {nome, ativa} = req.body
 
-  // Checkar se todos os campos estão vazios
+  //Confirmar se todos os campos estão vazios
   if (!nome && ativa === undefined) {
     return res.status(400).json({ mensagem: "Preencha pelo menos um campo para atualizar" });
   }
 
-  // Checkar se status é booleano
+  //Confirmar se status é booleano
   const ativaValor = validateBoolean(ativa);
   if(ativa !== undefined && typeof ativaValor !== 'boolean'){
     return res.status(400).json({mensagem: "Status deve ser um valor booleano ex:(true,false)"});
@@ -87,7 +87,7 @@ const atualizarUnidade = async(req, res) => {
     if(updatedUnidade){
       return res.status(200).json(updatedUnidade);
     } else{
-      return res.status(404).json({mensagem: `Não foi possível atualizar Unidade com id: ${req.params.id}`})
+      return res.status(404).json({mensagem: `Não foi encontrado a unidade com id: ${req.params.id}`})
     }
   } catch (error) {
     return res.status(500).json({mensagem: error.message});
@@ -100,12 +100,16 @@ const atualizarUnidade = async(req, res) => {
 //Route '/unidade/:id'
 const deleteUnidade = async(req, res) => {
   try {
-    
+    //Procurar Agendamentos com unidade antes de excluir
+    const findAgendamentosComAtendente = await Agendamento.find({atendente: req.params.id})
+    if(findAgendamentosComAtendente.length > 0){
+      return res.status(400).json({mensagem: "Exclua esses agendamentos antes de excluir essa unidade", agendamento: findAgendamentosComAtendente})
+    }
     const deletedUnidade = await Unidade.findByIdAndDelete(req.params.id)
     if(deletedUnidade){
-      return res.status(200).json({mensagem: `Deletado o unidade com id ${req.params.id}`})
+      return res.status(200).json({mensagem: `Deletado a unidade com id ${req.params.id}`})
     } else {
-      return res.status(404).json({mensagem: `Não foi possível deletar Unidade com id: ${req.params.id}`})
+      return res.status(404).json({mensagem: `Não foi encontrado a unidade com id: ${req.params.id}`})
     }
   } catch (error) {
     return res.status(500).json({mensagem: error.message});

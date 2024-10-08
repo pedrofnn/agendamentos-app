@@ -3,13 +3,6 @@ import Unidade from '../models/unidadeModel.js';
 import Atendente from '../models/atendenteModel.js';
 
 
-const validarHorarioAgendamento = async(agendamento) => {
-  try {
-    
-  } catch (error) {
-    
-  }
-}
 
 //Lista com todos os agendamentos
 //Método GET
@@ -29,6 +22,8 @@ const todosAgendamentos = async(req, res) => {
 //Rota /agendamentos
 const criarAgendamento = async(req, res) => {
   const {horario, data, pacienteNome, atendente, unidade} = req.body
+
+  //Confirmar se todos os campos estão preenchidos
   if(!horario || !data || !pacienteNome || !atendente || !unidade){
     res.status(400).json({mensagem: "Preencha todos os campos"})
   } else{
@@ -40,20 +35,32 @@ const criarAgendamento = async(req, res) => {
         atendente,
         unidade,
       })
+      //Procurar se existe atendente por ID
       const findAtendente = await Atendente.findById(novoAgendamento.atendente);
       if(!findAtendente){
         return res.status(404).json({mensagem: "Atendente não econtrada"})
-      } else {
-        const findUnidade = await Unidade.findById(novoAgendamento.unidade);
-        if(!findUnidade){
-          return res.status(404).json({mensagem: "Unidade não econtrada"})
-        } else {
-          await novoAgendamento.save();
-          return res.status(201).json(novoAgendamento)
-        }
+      } 
+
+      //Procurar se existe unidade por ID
+      const findUnidade = await Unidade.findById(novoAgendamento.unidade);
+      if(!findUnidade){
+        return res.status(404).json({mensagem: "Unidade não econtrada"})
+      } 
+
+      //Procurar agendamentos na mesma unidade e no mesmo horário
+      const findAgendamentos = await Agendamento.find({
+        horario: novoAgendamento.horario, 
+        data: novoAgendamento.data, 
+        unidade: novoAgendamento.unidade
+      });
+      if(findAgendamentos.length > 0){
+        return res.status(400).json({mensagem: "Já existe agendamento nesse horário"})
+      } else{
+        //Salvar novo agendamento
+        await novoAgendamento.save();
+        return res.status(201).json(novoAgendamento)
       }
     }catch (error){
-      console.error(error)
       return res.status(500).json({mensagem: error.message})
     }
   }
@@ -69,7 +76,7 @@ const agendamentoPorId = async(req, res) => {
     if(findAgendamento){
       return res.status(200).json(findAgendamento)
     } else {
-      return res.status(404).json({mensagem: `Não foi encontrado o agendamento com id: ${req.params.id}`})
+      return res.status(404).json({mensagem: `Não foi possível encontar o agendamento com id: ${req.params.id}`})
     }
   }catch (error){
     return res.status(500).json({mensagem: error.message})
@@ -81,8 +88,10 @@ const agendamentoPorId = async(req, res) => {
 //Rota /agendamentos/:id
 const atualizarAgendamento = async(req, res) => {
   const {horario, data, pacienteNome, atendente, unidade} = req.body
-  if(!horario && !data && !pacienteNome && !atendente && !unidade){
-    return res.status(400).json({mensagem: "Preencha pelo menos um campo para atualizar"})
+
+  //Confirmar se todos os campos estão preenchidos
+  if(!horario || !data || !pacienteNome || !atendente || !unidade){
+    return res.status(400).json({mensagem: "Preencha todos os campos"})
   }
   const updateAgendamento = new Agendamento({
     _id: req.params.id,
@@ -93,6 +102,18 @@ const atualizarAgendamento = async(req, res) => {
     unidade
   });
   try{
+    //Procurar agendamentos na mesma unidade e no mesmo horário
+    const findAgendamentos = await Agendamento.find({
+      _id: {$ne: updateAgendamento._id}, //Exclui o id na procura
+      horario: updateAgendamento.horario, 
+      data: updateAgendamento.data, 
+      unidade: updateAgendamento.unidade
+    })
+    if(findAgendamentos.length > 0){
+      return res.status(400).json({mensagem: "Já existe agendamento nesse horário"})
+    } 
+
+    //Atualiza o agendamento
     const updatedAgendamento = await Agendamento.findByIdAndUpdate(req.params.id, updateAgendamento,{new: true})
     if(updatedAgendamento){
       return res.status(200).json({updatedAgendamento})
@@ -111,7 +132,7 @@ const deleteAgendamento = async(req, res) => {
   try {
     const deletedAgendamento = await Agendamento.findByIdAndDelete(req.params.id);
     if(deletedAgendamento) {
-      return res.status(200).json({mensagem: `Deletado com sucesso o agendamento de id: ${req.params.id}`})
+      return res.status(200).json({mensagem: `Deletado o agendamento de id: ${req.params.id}`})
     } else {
       return res.status(404).json({mensagem: `Não foi encontrado o agendamento com id: ${req.params.id}`})
     }
