@@ -1,6 +1,7 @@
 import app from './src/app.js'
-import 'dotenv/config';
+import dotenv from 'dotenv';
+dotenv.config({path: '../.env'});
 
 const PORT = process.env.PORT || 5000
 
-app.listen(PORT, () => console.log(`Rodando em http://localhost:${PORT}`))
+app.listen(PORT, () => console.log(`Backend rodando em http://localhost:${PORT}`))

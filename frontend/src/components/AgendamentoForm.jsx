@@ -1,23 +1,31 @@
 import { useState } from 'react';
-import {unidades, atendentes} from '../formDB'
 
-const AgendamentoForm = ({updateForm, agendamentoSubmit}) => {
-  const [nome, setNome] = useState(updateForm ? updateForm.nome : "");
-  const [data, setData] = useState(updateForm ? updateForm.data : "");
+const AgendamentoForm = ({updateForm, agendamentoSubmit, unidades, atendentes, onAgendamentoUpdate}) => {
+  const [agendamentoId, setAgendamentoId] = useState(updateForm ? updateForm._id : "")
+  const [pacienteNome, setPacienteNome] = useState(updateForm ? updateForm.pacienteNome : "");
+  const [data, setData] = useState(updateForm ? formDate(updateForm.data) : "");
   const [horario, setHorario] = useState(updateForm ? updateForm.horario : "");
-  const [unidade, setUnidade] = useState(updateForm ? updateForm.unidade : "");
-  const [atendente, setAtendente] = useState(updateForm ? updateForm.atendente : "");
+  const [unidade, setUnidade] = useState(updateForm ? updateForm.unidade._id : "");
+  const [atendente, setAtendente] = useState(updateForm ? updateForm.atendente._id : "");
 
   const submitForm = (e) => {
     e.preventDefault();
     const novoAgendamento = {
-      nome,
+      pacienteNome,
       data,
       horario,
       unidade,
       atendente
     }
-    agendamentoSubmit(novoAgendamento)
+    if(!updateForm){
+      agendamentoSubmit(novoAgendamento);
+    } else {
+      onAgendamentoUpdate(novoAgendamento, agendamentoId);
+    }
+  }
+  function formDate(dateString){
+    const date = dateString.split("T");
+    return date[0];
   }
 
   const classes = {
@@ -30,7 +38,7 @@ const AgendamentoForm = ({updateForm, agendamentoSubmit}) => {
   return (
     <form className="w-96 mx-auto" onSubmit={submitForm}>
       <label className={`${classes.label} w-full`}>Nome Paciente
-        <input type="text" name="nome" className={classes.input} value={nome} onChange={(e) => setNome(e.target.value)} required/>
+        <input type="text" name="pacienteNome" className={classes.input} value={pacienteNome} onChange={(e) => setPacienteNome(e.target.value)} required/>
       </label>
       <div className="flex justify-between">
         <label className={`${classes.label} w-2/5`} >Data
@@ -44,13 +52,13 @@ const AgendamentoForm = ({updateForm, agendamentoSubmit}) => {
       <label className={`${classes.label} w-full`}>Unidade
         <select className={classes.select} value={unidade} onChange={(e) => setUnidade(e.target.value)} required>
           <option disabled className="hidden" value={""}></option>
-          {unidades.map((nome, index) => <option key={index} value={nome}>{nome}</option>)}
+          {unidades.map((unidade) => <option key={unidade._id} value={unidade._id}>{unidade.nome}</option>)}
       </select>
       </label>
       <label className={`${classes.label} w-full`}>Atendente
         <select className={classes.select} value={atendente} onChange={(e) => setAtendente(e.target.value)} required>
           <option disabled className="hidden" value={""}></option>
-          {atendentes.map((nome, index) => <option key={index} value={nome}>{nome}</option>)}
+          {atendentes.map((atendente) => <option key={atendente._id} value={atendente._id}>{atendente.nome}</option>)}
         </select>
       </label>
       <button type="submit" className={classes.button}>Enviar</button>

@@ -2,9 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-.table-div{
-  max-width: 900px;
-}
 .popup-animation {
   animation: popup .5s linear;
 }

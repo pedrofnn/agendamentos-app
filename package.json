@@ -1,15 +1,15 @@
 {
-  "name": "agendamentos-app-backend",
+  "name": "agendamentos-app",
   "version": "1.0.0",
+  "description": "Um app de agendamentos feito com MERN",
   "main": "server.js",
-  "keywords": [],
-  "author": "",
   "license": "ISC",
-  "description": "",
   "type": "module",
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon server.js"
+    "server": "nodemon backend/server.js",
+    "client": "npm run dev --prefix frontend",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "dependencies": {
     "dotenv": "^16.4.5",
@@ -17,6 +17,7 @@
     "mongoose": "^8.6.4"
   },
   "devDependencies": {
+    "concurrently": "^9.0.1",
     "nodemon": "^3.1.7"
   }
 }
