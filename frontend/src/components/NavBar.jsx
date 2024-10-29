@@ -1,22 +1,24 @@
 import {SunIcon} from './icons/SunIcon'
 import {MoonIcon} from './icons/MoonIcon'
-import {ClockIcon} from './icons/ClockIcon'
-import { useState } from 'react'
+import {TableIcon} from './icons/TableIcon'
+import {DashboardIcon} from './icons/DashboardIcon'
+import {NavLink} from 'react-router-dom'
 
-const NavBar = () => {
+const NavBar = ({darkMode, setDarkMode}) => {
   //Altera tema para escuro
-  const [darkMode, setDarkMode] = useState(false)
   const toggleTheme = () => {
       document.documentElement.classList.toggle("dark")
       setDarkMode((prevState) => !prevState)
    }  
   //Classes de estilo Tailwind
   const styleClass = {
-    aside: "fixed top-0 left-0 z-40 w-24 h-screen transition-transform -translate-x-full sm:translate-x-0",
+    aside: "sticky top-0 left-0 z-40 w-20 h-screen transition-transform -translate-x-full sm:translate-x-0 relative",
     navDiv: "h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800 flex flex-col items-center",
-    navUl: "space-y-2 font-medium",
+    navUl: "space-y-2 font-medium my-auto flex flex-col gap-y-2",
     navLi: "w-fit mx-auto",
-    navLink: "flex items-center p-1 text-gray-900 rounded-full dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group",
+    navLink: ({isActive}) => isActive ? "flex items-center p-1 text-white rounded-lg bg-blue-600 dark:text-white group" : "flex items-center p-1 text-gray-900 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 group",
+    navIcon: {width: "40px", height: "40px"},
+    navToolTip: "absolute top-50 left-20 scale-0 group-hover:scale-100 bg-black/75 p-2 text-white rounded-lg font-bold text-sm transition-all",
     themeLabel: "items-center cursor-pointer mt-auto flex flex-col dark:text-gray-400",
     themeInput: "sr-only peer",
     themeIcons: "w-7 h-7 mb-2 text-gray-900 hover:text-gray-800 dark:text-gray-300 dark:hover:text-gray-400 ",
@@ -28,9 +30,16 @@ const NavBar = () => {
         <div className={styleClass.navDiv}>
           <ul className={styleClass.navUl}>
             <li className={styleClass.navLi}>
-              <a href="#" className={styleClass.navLink}>
-                <ClockIcon className="text-gray-800 dark:text-gray-200"/>
-              </a>
+              <NavLink to='/' className={styleClass.navLink}>
+                <DashboardIcon width={styleClass.navIcon.width} height={styleClass.navIcon.height}/>
+                <span className={styleClass.navToolTip}>Dashboard</span>
+              </NavLink>
+            </li>
+            <li className={styleClass.navLi}>
+              <NavLink to='/agendamentos' className={styleClass.navLink}>
+                <TableIcon width={styleClass.navIcon.width} height={styleClass.navIcon.height}/>
+                <span className={styleClass.navToolTip}>Agendamentos</span>
+              </NavLink>
             </li>
           </ul>
           <label className={styleClass.themeLabel}>

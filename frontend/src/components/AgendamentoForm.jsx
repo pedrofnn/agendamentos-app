@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const AgendamentoForm = ({updateForm, agendamentoSubmit, unidades, atendentes, onAgendamentoUpdate}) => {
+const AgendamentoForm = ({updateForm, agendamentoSubmit, unidades, atendentes, onAgendamentoUpdate, closeModal}) => {
   const [agendamentoId, setAgendamentoId] = useState(updateForm ? updateForm._id : "")
   const [pacienteNome, setPacienteNome] = useState(updateForm ? updateForm.pacienteNome : "");
   const [data, setData] = useState(updateForm ? formDate(updateForm.data) : "");
@@ -22,6 +22,7 @@ const AgendamentoForm = ({updateForm, agendamentoSubmit, unidades, atendentes, o
     } else {
       onAgendamentoUpdate(novoAgendamento, agendamentoId);
     }
+    closeModal();
   }
   function formDate(dateString){
     const date = dateString.split("T");

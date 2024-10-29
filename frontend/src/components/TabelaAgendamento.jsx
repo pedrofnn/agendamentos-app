@@ -4,8 +4,8 @@ const TabelaAgendamento = ({deleteAgendamento, onEdit, agendamentos}) => {
   
   //Classes de estilo Tailwind
   const styleClass = {
-    container: "mx-auto w-[950px] md:h-[730px] relative overflow-y-auto shadow-md",
-    tableDiv: "overflow-x-auto shadow-md sm:rounded-lg md:w-[900px]",
+    container: "mx-auto w-[950px] overflow-y-auto  shadow-md rounded-lg mb-14",
+    tableDiv: "shadow-md sm:rounded-lg",
     table: "w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400",
     thead: "text-sm text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400",
     tr: "odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700",
